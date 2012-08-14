@@ -15,84 +15,12 @@ First attempt at meeting Gnome HIG: http://developer.gnome.org/hig-book/3.0/desi
 import os
 # Local imports
 import ccgui.common
+import ccgui.ui
 
 from gi.repository import Gtk
 
 # Global variables
 # Function definitions
-
-"""
-This function allows the page to keep track of the number of rows added to the grid.
-Using add will mess it up though.
-"""
-def add_control(page, widget, width, height):
-    page.attach(widget, 0, page.rows, width, height)
-    page.rows += 1
-
-"""
-Used when adding an item to a grid that you want to take up the entire row.
-Useful for adding titles, labels, pictures etc.
-Increments row counter.
-"""
-def add_wide_control(page, widget):
-    page.attach(widget, 0, page.rows, 2, 1)
-    page.rows += 1
- 
-"""
-Adds a label and a control to a new row, incrementing the counter.
-In normal usage a label would be passed, but it could be any control.
-"""    
-def add_row(page, label, control):
-    page.attach(label, 0, page.rows, 1, 1 )
-    page.attach(control, 1, page.rows, 1, 1)
-    page.rows += 1
-
-"""
-Adds a blank row to divide to separate sections within a page.
-"""
-def add_divider(page):
-    divider = Gtk.Alignment(xalign = 0.0,
-                                    yalign = 0.0,
-                                    xscale = 0.0,
-                                    yscale = 0.0)
-    divider.set_size_request(0, 6)
-    add_wide_control(page, divider)
-    return divider
-
-"""
-Adds a title to identify a section of the page.
-Automatically formats the string so that it is displayed in bold.
-"""
-def add_section_title(page, title):
-    title = Gtk.Label(label = "<b>" + title + "</b>",
-                           use_markup = True,
-                           halign = Gtk.Align.START)
-    add_wide_control(page, title)
-    return title
-
-"""
-The following *do not* increase the row counter.
-They are used to apply standard settings to all controls displayed on a page.
-"""
-def add_label(page, label):
-    label = Gtk.Label(label = label,
-                           use_markup = True,
-                           halign = Gtk.Align.START,
-                           margin_left = 18)
-    return label
-    
-def add_check_button(page, label):
-    button = Gtk.CheckButton(label = label,
-                                        hexpand = True,
-                                        margin_left = 18)
-    return button
-    
-def add_entry(page):
-    entry = Gtk.Entry(halign = Gtk.Align.START,
-                             hexpand=True)
-    return entry
-    
-
 # Classes
 """
 Base class for pages within the assistant.
@@ -118,21 +46,21 @@ class Page(Gtk.Grid):
 class IntroPage(Page):
     def __init__(self, assistant):
         Page.__init__(self, assistant=assistant, label="Introduction", pagetype=Gtk.AssistantPageType.INTRO)
-        l = add_label(self, "<b>Conky-Colors Configuration Wizard</b>\nThis wizard will guide you through configuring the display options of Conky-Colors.")
+        l = ccgui.ui.add_label(self, "<b>Conky-Colors Configuration Wizard</b>\nThis wizard will guide you through configuring the display options of Conky-Colors.")
         l.set_vexpand(True)
-        add_wide_control(self,l)
+        ccgui.ui.add_wide_control(self,l)
         
         
 class ModePage(Page):
     def __init__(self, assistant):
         Page.__init__(self, assistant=assistant, label="Mode", pagetype=Gtk.AssistantPageType.CONTENT)
                 
-        add_section_title(self, "Mode")
+        ccgui.ui.add_section_title(self, "Mode")
         
-        l = add_label(self, "Descriptive text.\n\nLua support needs to be built into Conky to correctly display for but Default.")
-        add_wide_control(self,l)
+        l = ccgui.ui.add_label(self, "Descriptive text.\n\nLua support needs to be built into Conky to correctly display for but Default.")
+        ccgui.ui.add_wide_control(self,l)
         
-        l = add_label(self, "Layout Mode:")
+        l = ccgui.ui.add_label(self, "Layout Mode:")
         modes = Gtk.ListStore(str)
         modes.append(["Default"])
         modes.append(["Board"])
@@ -149,12 +77,12 @@ class ModePage(Page):
         self.mode.set_model(modes)
         self.mode.set_active(0)
                 
-        add_row(self, l, self.mode)
+        ccgui.ui.add_row(self, l, self.mode)
                 
         image = Gtk.Image()
         #image.set_from_file("/usr/share/ccgui/conkypreview.png")
         image.set_from_file(ccgui.common.get_image("conkypreview.png"))
-        add_wide_control(self,image)
+        ccgui.ui.add_wide_control(self,image)
         
 class OptionsPage(Page):
     def __init__(self, assistant):
@@ -170,12 +98,12 @@ class GeneralPage(OptionsPage):
     def __init__(self, assistant):
         OptionsPage.__init__(self, assistant)
         
-        add_section_title(self, "Language")
+        ccgui.ui.add_section_title(self, "Language")
         
-        l = add_label(self, "Select the langauge used to display labels and headings.")
-        add_wide_control(self,l)
+        l = ccgui.ui.add_label(self, "Select the langauge used to display labels and headings.")
+        ccgui.ui.add_wide_control(self,l)
         
-        l = add_label(self, "Language:")
+        l = ccgui.ui.add_label(self, "Language:")
         languages = Gtk.ListStore(str)
 
         languages.append(["English"])
@@ -193,72 +121,72 @@ class GeneralPage(OptionsPage):
                                                    hexpand=True)
         self.language.set_model(languages)
         self.language.set_active(0)
-        add_row(self, l, self.language)
+        ccgui.ui.add_row(self, l, self.language)
     
-        add_divider(self)
+        ccgui.ui.add_divider(self)
         
-        add_section_title(self, "Theme")
+        ccgui.ui.add_section_title(self, "Theme")
         
-        l = add_label(self, "Theme chooser")
-        add_wide_control(self,l)
+        l = ccgui.ui.add_label(self, "Theme chooser")
+        ccgui.ui.add_wide_control(self,l)
         
 
 class SystemPage(OptionsPage):
     def __init__(self, assistant):
         OptionsPage.__init__(self, assistant)
         
-        add_section_title(self, "System")
+        ccgui.ui.add_section_title(self, "System")
         
-        l = add_label(self, "Descriptive text")
-        add_wide_control(self,l)
+        l = ccgui.ui.add_label(self, "Descriptive text")
+        ccgui.ui.add_wide_control(self,l)
         
-        self.cpu = add_check_button(self, "Enable CPU usage monitor.")
-        add_wide_control(self,self.cpu)
+        self.cpu = ccgui.ui.add_check_button(self, "Enable CPU usage monitor.")
+        ccgui.ui.add_wide_control(self,self.cpu)
         
-        self.cputemp = add_check_button(self, "Enable CPU temperature monitoring.")
-        add_wide_control(self,self.cputemp)
+        self.cputemp = ccgui.ui.add_check_button(self, "Enable CPU temperature monitoring.")
+        ccgui.ui.add_wide_control(self,self.cputemp)
                 
-        self.swap = add_check_button(self, "Enable swap usage monitor.")
-        add_wide_control(self,self.swap)
+        self.swap = ccgui.ui.add_check_button(self, "Enable swap usage monitor.")
+        ccgui.ui.add_wide_control(self,self.swap)
         
-        self.battery = add_check_button(self, "Enable battery monitor.")
-        add_wide_control(self,self.battery)
+        self.battery = ccgui.ui.add_check_button(self, "Enable battery monitor.")
+        ccgui.ui.add_wide_control(self,self.battery)
         
 class GMailPage(OptionsPage):
     def __init__(self, assistant):
         OptionsPage.__init__(self, assistant)
         
-        add_section_title(self, "GMail")
+        ccgui.ui.add_section_title(self, "GMail")
         
-        l = add_label(self, "Descriptive text")
-        add_wide_control(self,l)
+        l = ccgui.ui.add_label(self, "Descriptive text")
+        ccgui.ui.add_wide_control(self,l)
 
-        w = add_check_button(self, "Enable GMail support.") 
-        add_wide_control(self,w)
+        w = ccgui.ui.add_check_button(self, "Enable GMail support.") 
+        ccgui.ui.add_wide_control(self,w)
         
-        l = add_label(self, "Username:")
-        w = add_entry(self)
-        add_row(self, l, w)
+        l = ccgui.ui.add_label(self, "Username:")
+        w = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, w)
         
-        l = add_label(self, "Password:")
-        w = add_entry(self)
-        add_row(self, l, w)
+        l = ccgui.ui.add_label(self, "Password:")
+        w = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, w)
         
 class WeatherPage(OptionsPage):
     def __init__(self, assistant):
         OptionsPage.__init__(self, assistant)
         
-        add_section_title(self, "Weather")
+        ccgui.ui.add_section_title(self, "Weather")
         
-        l = add_label(self, "Descriptive text.\n\nInclude some information on where to get the codes.")
-        add_wide_control(self,l)
+        l = ccgui.ui.add_label(self, "Descriptive text.\n\nInclude some information on where to get the codes.")
+        ccgui.ui.add_wide_control(self,l)
 
-        w = add_check_button(self, "Enable weather support.") 
-        add_wide_control(self,w)
+        w = ccgui.ui.add_check_button(self, "Enable weather support.") 
+        ccgui.ui.add_wide_control(self,w)
         
-        l = add_label(self, "Area code:")
-        w = add_entry(self)
-        add_row(self, l, w)
+        l = ccgui.ui.add_label(self, "Area code:")
+        w = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, w)
         
 """
 Board Mode
@@ -267,62 +195,62 @@ class BoardPage(OptionsPage):
     def __init__(self, assistant):
         OptionsPage.__init__(self, assistant)
         
-        add_section_title(self, "Board/SLIM Mode Options")
-        add_divider(self)
-        add_section_title(self, "Appearance")
+        ccgui.ui.add_section_title(self, "Board/SLIM Mode Options")
+        ccgui.ui.add_divider(self)
+        ccgui.ui.add_section_title(self, "Appearance")
         
-        l = add_label(self, "Screen width:")
-        w = add_entry(self)
-        add_row(self, l, w)
+        l = ccgui.ui.add_label(self, "Screen width:")
+        w = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, w)
         
-        l = add_label(self, "Screen height:")
-        w = add_entry(self)
-        add_row(self, l, w)
+        l = ccgui.ui.add_label(self, "Screen height:")
+        w = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, w)
         
-        w = add_check_button(self, "Remove background.") 
-        add_wide_control(self,w)
+        w = ccgui.ui.add_check_button(self, "Remove background.") 
+        ccgui.ui.add_wide_control(self,w)
         
-        l = add_label(self, "Fix ring position:")
-        w = add_entry(self)
-        add_row(self, l, w)
+        l = ccgui.ui.add_label(self, "Fix ring position:")
+        w = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, w)
         
-        add_divider(self)
+        ccgui.ui.add_divider(self)
         
-        add_section_title(self, "Weather")
+        ccgui.ui.add_section_title(self, "Weather")
         
-        l = add_label(self, "Descriptive text.\n\nInclude some information on where to get the codes.")
-        add_wide_control(self,l)
+        l = ccgui.ui.add_label(self, "Descriptive text.\n\nInclude some information on where to get the codes.")
+        ccgui.ui.add_wide_control(self,l)
 
-        w = add_check_button(self, "Enable weather support.") 
-        add_wide_control(self,w)
+        w = ccgui.ui.add_check_button(self, "Enable weather support.") 
+        ccgui.ui.add_wide_control(self,w)
         
-        l = add_label(self, "Area code:")
-        w = add_entry(self)
-        add_row(self, l, w)
+        l = ccgui.ui.add_label(self, "Area code:")
+        w = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, w)
 
 class CairoPage(OptionsPage):
     def __init__(self, assistant):
         OptionsPage.__init__(self, assistant)
         
-        add_section_title(self, "Cairo Mode Options")
+        ccgui.ui.add_section_title(self, "Cairo Mode Options")
         
-        add_divider(self)        
-        add_section_title(self, "System")
-        l = add_label(self, "Descriptive text")
-        add_wide_control(self,l)
+        ccgui.ui.add_divider(self)        
+        ccgui.ui.add_section_title(self, "System")
+        l = ccgui.ui.add_label(self, "Descriptive text")
+        ccgui.ui.add_wide_control(self,l)
         
-        l = add_label(self, "CPU core selector")
-        add_wide_control(self,l)
+        l = ccgui.ui.add_label(self, "CPU core selector")
+        ccgui.ui.add_wide_control(self,l)
         
-        self.swap = add_check_button(self, "Enable swap usage monitor.")
-        add_wide_control(self,self.swap)
+        self.swap = ccgui.ui.add_check_button(self, "Enable swap usage monitor.")
+        ccgui.ui.add_wide_control(self,self.swap)
         
-        add_divider(self)        
-        add_section_title(self, "Clock")
-        l = add_label(self, "Descriptive text")
-        add_wide_control(self,l)
+        ccgui.ui.add_divider(self)        
+        ccgui.ui.add_section_title(self, "Clock")
+        l = ccgui.ui.add_label(self, "Descriptive text")
+        ccgui.ui.add_wide_control(self,l)
         
-        l = add_label(self, "Clock Mode:")
+        l = ccgui.ui.add_label(self, "Clock Mode:")
         modes = Gtk.ListStore(str)
         modes.append(["Disabled"])
         modes.append(["Cairo"])
@@ -331,12 +259,12 @@ class CairoPage(OptionsPage):
                                       hexpand=True)
         self.clock.set_model(modes)
         self.clock.set_active(0)
-        add_row(self, l, self.clock)
+        ccgui.ui.add_row(self, l, self.clock)
         
-        add_divider(self)        
-        add_section_title(self, "Media Player Support")
-        l = add_label(self, "Descriptive text")
-        add_wide_control(self,l)
+        ccgui.ui.add_divider(self)        
+        ccgui.ui.add_section_title(self, "Media Player Support")
+        l = ccgui.ui.add_label(self, "Descriptive text")
+        ccgui.ui.add_wide_control(self,l)
         
         #Reuse options for each player.
         playermodes = Gtk.ListStore(str)
@@ -347,26 +275,26 @@ class CairoPage(OptionsPage):
         playermodes.append(["Cairo-Glassy"])
         playermodes.append(["Lua"])
         
-        l = add_label(self, "Banshee:")
+        l = ccgui.ui.add_label(self, "Banshee:")
         self.banshee = Gtk.ComboBoxText(halign = Gtk.Align.START,
                                         hexpand=True)
         self.banshee.set_model(playermodes)
         self.banshee.set_active(0)
-        add_row(self, l, self.banshee)
+        ccgui.ui.add_row(self, l, self.banshee)
         
-        l = add_label(self, "Clementine:")
+        l = ccgui.ui.add_label(self, "Clementine:")
         self.clementine = Gtk.ComboBoxText(halign = Gtk.Align.START,
                                            hexpand=True)
         self.clementine.set_model(playermodes)
         self.clementine.set_active(0)
-        add_row(self, l, self.clementine)
+        ccgui.ui.add_row(self, l, self.clementine)
         
-        l = add_label(self, "Rhythmbox:")
+        l = ccgui.ui.add_label(self, "Rhythmbox:")
         self.rhythmbox = Gtk.ComboBoxText(halign = Gtk.Align.START,
                                          hexpand=True)
         self.rhythmbox.set_model(playermodes)
         self.rhythmbox.set_active(0)
-        add_row(self, l, self.rhythmbox)
+        ccgui.ui.add_row(self, l, self.rhythmbox)
         
         
                 
@@ -376,65 +304,65 @@ class RingPage(OptionsPage):
     def __init__(self, assistant):
         OptionsPage.__init__(self, assistant)
         
-        add_section_title(self, "Ring Mode Options")
-        add_divider(self)
-        add_section_title(self, "Appearance")
+        ccgui.ui.add_section_title(self, "Ring Mode Options")
+        ccgui.ui.add_divider(self)
+        ccgui.ui.add_section_title(self, "Appearance")
 
 class SLSPage(OptionsPage):
     def __init__(self, assistant):
         OptionsPage.__init__(self, assistant)
         
-        add_section_title(self, "SLS Mode Options")
-        add_divider(self)
-        add_section_title(self, "Appearance")
+        ccgui.ui.add_section_title(self, "SLS Mode Options")
+        ccgui.ui.add_divider(self)
+        ccgui.ui.add_section_title(self, "Appearance")
         
-        self.nobg = add_check_button(self, "Remove background.") 
-        add_wide_control(self,self.nobg)
+        self.nobg = ccgui.ui.add_check_button(self, "Remove background.") 
+        ccgui.ui.add_wide_control(self,self.nobg)
         
-        add_divider(self)
+        ccgui.ui.add_divider(self)
         
-        add_section_title(self, "Weather")
+        ccgui.ui.add_section_title(self, "Weather")
         
-        l = add_label(self, "Descriptive text.\n\nInclude some information on where to get the codes.")
-        add_wide_control(self,l)
+        l = ccgui.ui.add_label(self, "Descriptive text.\n\nInclude some information on where to get the codes.")
+        ccgui.ui.add_wide_control(self,l)
 
-        w = add_check_button(self, "Enable weather support.") 
-        add_wide_control(self,w)
+        w = ccgui.ui.add_check_button(self, "Enable weather support.") 
+        ccgui.ui.add_wide_control(self,w)
         
-        l = add_label(self, "Area code:")
-        w = add_entry(self)
-        add_row(self, l, w)
+        l = ccgui.ui.add_label(self, "Area code:")
+        w = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, w)
         
-        add_divider(self)
+        ccgui.ui.add_divider(self)
         
-        add_section_title(self, "GMail")
+        ccgui.ui.add_section_title(self, "GMail")
         
-        l = add_label(self, "Descriptive text")
-        add_wide_control(self,l)
+        l = ccgui.ui.add_label(self, "Descriptive text")
+        ccgui.ui.add_wide_control(self,l)
 
-        l = add_label(self, "Username:")
-        self.gmailusername = add_entry(self)
-        add_row(self, l, self.gmailusername)
+        l = ccgui.ui.add_label(self, "Username:")
+        self.gmailusername = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, self.gmailusername)
         
-        l = add_label(self, "Password:")
-        self.gmailpassword = add_entry(self)
-        add_row(self, l, self.gmailpassword)
+        l = ccgui.ui.add_label(self, "Password:")
+        self.gmailpassword = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, self.gmailpassword)
 
        
 class ConfirmationPage(Page):
     def __init__(self, assistant):
         Page.__init__(self, assistant=assistant, label="Confirmation", pagetype=Gtk.AssistantPageType.CONFIRM)
-        l = add_label(self, "<b>Are you sure you want to continue?</b>\nApplying these changes will overide the current configuration.")
+        l = ccgui.ui.add_label(self, "<b>Are you sure you want to continue?</b>\nApplying these changes will overide the current configuration.")
         l.set_vexpand(True)
-        add_wide_control(self,l)
+        ccgui.ui.add_wide_control(self,l)
 
         
 class SummaryPage(Page):
     def __init__(self, assistant):
         Page.__init__(self, assistant=assistant, label="Summary", pagetype=Gtk.AssistantPageType.SUMMARY) 
-        l = add_label(self, "<b>Configuration Complete</b>\nSay something magical about what's happened and provide update advice.")
+        l = ccgui.ui.add_label(self, "<b>Configuration Complete</b>\nSay something magical about what's happened and provide update advice.")
         l.set_vexpand(True)
-        add_wide_control(self,l)
+        ccgui.ui.add_wide_control(self,l)
         
 """
 This class is in charge of managing the wizard.
@@ -542,7 +470,7 @@ class Assistant(Gtk.Assistant):
             
                 
 def main():
-    print("CCGUI Version:" +  ccgui.common.get_version())
+    print("CCGUI Dev Version:" +  ccgui.common.get_version())
     win = Assistant()
     win.show()
     Gtk.main()
