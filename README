@@ -1,5 +1,26 @@
-Conky is a free, light-weight system monitor for X, that displays any information on your desktop.
+CCGUI
+=====
 
-CONKY-colors is an easier way to configure Conky.
+CCGUI is a configuration wizard for conky-colors, a tool that enables an easy way to configure Conky.  Conky is a free, light-weight system monitor for X, that displays any information on your desktop.
 
-CCGUI is a configuration wizard for conky-colors.
+Dependencies:
+GTK+3
+Python 3
+gobject-introspection
+
+Recent versions of PyGObject and its dependencies are packaged by nearly all major Linux distribution.
+
+How to install:
+Download and extract the ccgui-{version}.tar.gz package and type in a terminal in the same directory that has been extractd.
+$sudo python setup.py install
+
+Running the application:
+Until a .desktop file exists, type "ccgui" in a terminal.
+
+Developing:
+If you would like to edit and test the application, you can link the extracted files to python's site-package directory.  This will also install the usual executable script to /usr/bin/ccgui
+$sudo python setup.py develop
+
+To remove development version:
+$sudo python setup.py develop --uninstall
+
