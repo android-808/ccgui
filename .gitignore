@@ -1,3 +1,6 @@
+## app specific
+ccgui.egg-info/
+
 ## python specific
 *.pyc
 
