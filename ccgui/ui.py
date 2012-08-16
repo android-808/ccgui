@@ -71,3 +71,26 @@ def add_entry(page):
                              hexpand=True)
     return entry
 
+"""
+Base class for pages within the assistant.
+Derived from Gtk.Grid, it automatically applies standard options to create a standard look and feel.
+Adds itself to the supplied assistant and configures the display
+"""
+class Page(Gtk.Grid):
+    def __init__(self, assistant, label, pagetype):
+        Gtk.Grid.__init__(self, orientation=Gtk.Orientation.VERTICAL, 
+                                border_width=12,
+                                row_spacing=6,
+                                column_spacing=12)
+                             
+        self.assistant = assistant
+        self.page_number = self.assistant.append_page(self)
+        self.assistant.set_page_type(self, pagetype)
+        self.assistant.set_page_title(self, label)
+        # This needs to be removed.
+        self.assistant.set_page_complete(self, True)
+        self.rows = 0
+
+class OptionsPage(Page):
+    def __init__(self, assistant):
+        Page.__init__(self, assistant=assistant, label="Options", pagetype=Gtk.AssistantPageType.CONTENT) 
