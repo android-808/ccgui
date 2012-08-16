@@ -225,12 +225,14 @@ class Assistant(Gtk.Assistant):
         if self.mode.mode.get_active() == 0:
             self.commandline += self.default.GetOptions()
         if self.mode.mode.get_active() == 1:
+            self.commandline += " --board"
             self.commandline += self.board.GetOptions()
         if self.mode.mode.get_active() == 2:
             self.commandline += self.cairo.GetOptions()
         if self.mode.mode.get_active() == 3:
             self.commandline += self.ring.GetOptions()
         if self.mode.mode.get_active() == 4:
+            self.commandline += " --slim"
             self.commandline += self.board.GetOptions()
         if self.mode.mode.get_active() == 5:
             self.commandline += self.sls.GetOptions()

@@ -40,8 +40,8 @@ class BoardPage(OptionsPage):
         ccgui.ui.add_wide_control(self,w)
         
         l = ccgui.ui.add_label(self, "Area code:")
-        w = ccgui.ui.add_entry(self)
-        ccgui.ui.add_row(self, l, w)
+        self.area = ccgui.ui.add_entry(self)
+        ccgui.ui.add_row(self, l, self.area)
 
 class Board():
     def __init__(self, assistant):
@@ -55,13 +55,14 @@ class Board():
         
     def GetOptions(self):
         ret = str()
-        ret += " --w=" + self.system.board.screenwidth.get_value()
-        #if self.system.cputemp.get_active() == True:
-        #    ret += " --cputemp"
-        #if self.system.swap.get_active() == True:
-        #    ret += " --swap"
-        #if self.system.battery.get_active() == True:
-        #    ret += " --battery"
+        ret += " --w=" + self.board.screenwidth.get_text()
+        ret += " --h=" + self.board.screenheight.get_text()
+        if self.board.nobg.get_active() == True:
+            ret += " --nobg"
+        if self.board.ringpos.get_text_length() > 0:
+            ret += " --posfix=" + self.board.ringpos.get_text()
+        if self.board.weather.get_active() == True:
+            ret += " --weather=" + self.board.area.get_text())
         return ret
         
         
