@@ -62,7 +62,7 @@ class Board():
         if self.board.ringpos.get_text_length() > 0:
             ret += " --posfix=" + self.board.ringpos.get_text()
         if self.board.weather.get_active() == True:
-            ret += " --weather=" + self.board.area.get_text())
+            ret += " --weather=" + self.board.area.get_text()
         return ret
         
         
