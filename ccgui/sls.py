@@ -21,9 +21,6 @@ class SLSPage(OptionsPage):
         l = ccgui.ui.add_label(self, "Descriptive text.\n\nInclude some information on where to get the codes.")
         ccgui.ui.add_wide_control(self,l)
 
-        w = ccgui.ui.add_check_button(self, "Enable weather support.") 
-        ccgui.ui.add_wide_control(self,w)
-        
         l = ccgui.ui.add_label(self, "Area code:")
         self.area = ccgui.ui.add_entry(self)
         ccgui.ui.add_row(self, l, self.area)
