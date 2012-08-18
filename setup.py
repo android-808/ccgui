@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='ccgui',
-    version='0.1.0',
+    version='0.2.0',
     packages = find_packages(exclude=["docs", "tests"]),
     package_data = {
         # If any package contains *.txt or *.rst files, include them:
