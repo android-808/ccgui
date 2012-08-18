@@ -209,8 +209,6 @@ class Assistant(Gtk.Assistant):
             return self.confirm.page_number
         if page_number == self.ring.GetLastPage():
             return self.confirm.page_number
-        if page_number == self.slim.GetLastPage():
-            return self.confirm.page_number
         if page_number == self.sls.GetLastPage():
             return self.confirm.page_number
 
