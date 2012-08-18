@@ -81,22 +81,22 @@ class GeneralPage(OptionsPage):
         ccgui.ui.add_wide_control(self,l)
         
         l = ccgui.ui.add_label(self, "Language:")
-        languages = Gtk.ListStore(str)
+        self.languages = Gtk.ListStore(str, str)
 
-        languages.append(["English"])
-        languages.append(["Bulgarian"])
-        languages.append(["Estonian"])
-        languages.append(["French"])
-        languages.append(["German"])
-        languages.append(["Italian"])
-        languages.append(["Polish"])
-        languages.append(["Portuguese"])
-        languages.append(["Russian"])
-        languages.append(["Spanish"])
-        languages.append(["Ukrainian"])
+        self.languages.append(["English", "en"])
+        self.languages.append(["Bulgarian", "bg"])
+        self.languages.append(["Estonian", "et"])
+        self.languages.append(["French", "fr"])
+        self.languages.append(["German", "de"])
+        self.languages.append(["Italian", "it"])
+        self.languages.append(["Polish", "pl"])
+        self.languages.append(["Portuguese", "pt"])
+        self.languages.append(["Russian", "ru"])
+        self.languages.append(["Spanish", "es"])
+        self.languages.append(["Ukrainian", "uk"])
         self.language = Gtk.ComboBoxText(halign = Gtk.Align.START,
                                                    hexpand=True)
-        self.language.set_model(languages)
+        self.language.set_model(self.languages)
         self.language.set_active(0)
         ccgui.ui.add_row(self, l, self.language)
     
@@ -223,6 +223,10 @@ class Assistant(Gtk.Assistant):
     """
     def on_apply(self, assistant, button):
         self.commandline = "conky-colors"
+        
+        # Language
+        tree_iter = self.general.language.get_active_iter()
+        self.commandline += " --lang=" + self.general.languages[tree_iter][1]
         
         if self.mode.mode.get_active() == 0:
             self.commandline += self.default.GetOptions()
