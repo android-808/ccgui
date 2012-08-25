@@ -83,11 +83,11 @@ class GeneralPage(OptionsPage):
         l = ccgui.ui.add_label(self, "Language:")
         self.languages = Gtk.ListStore(str, str)
 
-        self.languages.append(["English", "en"])
         self.languages.append(["Bulgarian", "bg"])
         self.languages.append(["Estonian", "et"])
         self.languages.append(["French", "fr"])
         self.languages.append(["German", "de"])
+        self.languages.append(["English", "en"])
         self.languages.append(["Italian", "it"])
         self.languages.append(["Polish", "pl"])
         self.languages.append(["Portuguese", "pt"])
@@ -97,16 +97,44 @@ class GeneralPage(OptionsPage):
         self.language = Gtk.ComboBoxText(halign = Gtk.Align.START,
                                                    hexpand=True)
         self.language.set_model(self.languages)
-        self.language.set_active(0)
+        self.language.set_active(4)
         ccgui.ui.add_row(self, l, self.language)
     
         ccgui.ui.add_divider(self)
         
         ccgui.ui.add_section_title(self, "Theme")
         
-        l = ccgui.ui.add_label(self, "Theme chooser")
+        l = ccgui.ui.add_label(self, "Select the theme used to display the selected mode.")
         ccgui.ui.add_wide_control(self,l)
         
+        l = ccgui.ui.add_label(self, "Theme:")
+        self.themes = Gtk.ListStore(str, str)
+
+        self.themes.append(["Ambiance", "ambiance"])
+        self.themes.append(["Black", "black"])
+        self.themes.append(["Blue", "blue"])
+        self.themes.append(["Brave", "brave"])
+        self.themes.append(["Carbonite", "carbonite"])
+        self.themes.append(["Cyan", "cyan"])
+        self.themes.append(["Dust", "dust"])
+        self.themes.append(["Elementary", "elementary"])
+        self.themes.append(["Green", "green"])
+        self.themes.append(["Human", "human"])
+        self.themes.append(["Orange", "orange"])
+        self.themes.append(["Noble", "noble"])
+        self.themes.append(["Purple", "purple"])
+        self.themes.append(["Radiance", "radiance"])
+        self.themes.append(["Red", "red"])
+        self.themes.append(["Tribute", "tribute"])
+        self.themes.append(["White", "white"])
+        self.themes.append(["Wine", "wine"])
+        self.themes.append(["Wise", "wise"])
+        
+        self.theme = Gtk.ComboBoxText(halign = Gtk.Align.START,
+                                                   hexpand=True)
+        self.theme.set_model(self.themes)
+        self.theme.set_active(9)
+        ccgui.ui.add_row(self, l, self.theme)
 
        
 class ConfirmationPage(Page):
@@ -227,6 +255,10 @@ class Assistant(Gtk.Assistant):
         # Language
         tree_iter = self.general.language.get_active_iter()
         self.commandline += " --lang=" + self.general.languages[tree_iter][1]
+        
+        # Theme
+        tree_iter = self.general.theme.get_active_iter()
+        self.commandline += " --theme=" + self.general.themes[tree_iter][1]
         
         if self.mode.mode.get_active() == 0:
             self.commandline += self.default.GetOptions()
