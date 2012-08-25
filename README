@@ -21,6 +21,8 @@ Developing:
 If you would like to edit and test the application, you can link the extracted files to python's site-package directory.  This will also install the usual executable script to /usr/bin/ccgui
 $sudo python setup.py develop
 
+This command will need to be rerun each time the version changes or it will be incorrectly reported.
+
 To remove development version:
 $sudo python setup.py develop --uninstall
 
