@@ -33,7 +33,8 @@ def add_divider(page):
     divider = Gtk.Alignment(xalign = 0.0,
                                     yalign = 0.0,
                                     xscale = 0.0,
-                                    yscale = 0.0)
+                                    yscale = 0.0,
+                                    margin_left = 18)
     divider.set_size_request(0, 6)
     add_wide_control(page, divider)
     return divider
@@ -58,6 +59,16 @@ def add_label(page, label):
                            use_markup = True,
                            halign = Gtk.Align.START,
                            margin_left = 18)
+    return label
+
+def add_wrapped_label(page, label):
+    # margin_left seems to break alignment. I don't fully understand the layout yet.
+    label = Gtk.Label(label = label,
+                           use_markup = True,
+                           halign = Gtk.Align.START,
+                           margin_left = 18,
+                           wrap = True)
+                          
     return label
     
 def add_check_button(page, label):
@@ -91,6 +102,10 @@ class Page(Gtk.Grid):
         self.assistant.set_page_complete(self, True)
         self.rows = 0
 
+"""
+Derived class used as a base for all options pages.
+Basically just sets the title and page type automatically.
+"""
 class OptionsPage(Page):
     def __init__(self, assistant):
         Page.__init__(self, assistant=assistant, label="Options", pagetype=Gtk.AssistantPageType.CONTENT) 
