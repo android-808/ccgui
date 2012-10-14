@@ -75,6 +75,9 @@ class GeneralPage(OptionsPage):
     def __init__(self, assistant):
         OptionsPage.__init__(self, assistant)
         
+        ccgui.ui.add_section_title(self, "General Settings")
+        ccgui.ui.add_divider(self)
+        
         ccgui.ui.add_section_title(self, "Language")
         
         l = ccgui.ui.add_label(self, "Select the langauge used to display labels and headings.")
@@ -136,6 +139,25 @@ class GeneralPage(OptionsPage):
         self.theme.set_active(9)
         ccgui.ui.add_row(self, l, self.theme)
 
+
+        ccgui.ui.add_divider(self)
+        
+        ccgui.ui.add_section_title(self, "Temperature Units")
+        
+        l = ccgui.ui.add_label(self, "Select the unit to be used to display all temperature readings.")
+        ccgui.ui.add_wide_control(self,l)
+
+        l = ccgui.ui.add_label(self, "Unit:")
+        self.units = Gtk.ListStore(str, str)
+
+        self.units.append(["Celcius", "C"])
+        self.units.append(["Fahrenheit", "F"])
+
+        self.unit = Gtk.ComboBoxText(halign = Gtk.Align.START,
+                                                   hexpand=True)
+        self.unit.set_model(self.units)
+        self.unit.set_active(0)
+        ccgui.ui.add_row(self, l, self.unit)
        
 class ConfirmationPage(Page):
     def __init__(self, assistant):
@@ -160,7 +182,7 @@ class Assistant(Gtk.Assistant):
 
     def __init__(self):
         Gtk.Assistant.__init__(self)
-        self.set_resizable(False)
+        #self.set_resizable(False)
     	
         """
         Connect signals
@@ -175,7 +197,6 @@ class Assistant(Gtk.Assistant):
         Set up main window.
         """
         self.set_title("Conky-Colors Configuration Wizard")
-
                  
         """ 
         Create the pages in the order they should be displayed.
@@ -206,9 +227,6 @@ class Assistant(Gtk.Assistant):
         self.show_all()
      
     def prepare_action(self, assistant, page):
-        print("Preparing page ", assistant.get_page_title(page))
-        #self.current_page = assistant.get_page_title(page)
-
         # Configure the final page.
         if page == self.summary:
             self.connect("close", self.button_pressed, "Close")
@@ -259,6 +277,10 @@ class Assistant(Gtk.Assistant):
         # Theme
         tree_iter = self.general.theme.get_active_iter()
         self.commandline += " --theme=" + self.general.themes[tree_iter][1]
+
+	# Units
+        tree_iter = self.general.unit.get_active_iter()
+        self.commandline += " --unit=" + self.general.units[tree_iter][1]
         
         if self.mode.mode.get_active() == 0:
             self.commandline += self.default.GetOptions()
@@ -275,7 +297,7 @@ class Assistant(Gtk.Assistant):
         if self.mode.mode.get_active() == 5:
             self.commandline += self.sls.GetOptions()
                       
-        print("Command:" + self.commandline)
+        print("Command: " + self.commandline)
         #os.system(self.commandline)
             
             
