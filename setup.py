@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='ccgui',
-    version='0.2.0',
+    version='0.4.0',
     packages = find_packages(exclude=["docs", "tests"]),
     package_data = {
         # If any package contains *.txt or *.rst files, include them:
@@ -29,5 +29,5 @@ setup(
     description='GUI configuration wizard for conky-colors.',
     license='Unknown',
     keywords = "conky colors wizard",
-    url='www.example.com',
+    url='https://github.com/android-808/ccgui',
 )
