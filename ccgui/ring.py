@@ -89,7 +89,6 @@ class Ring():
             ret += " --rhythmbox=" + self.ring.playerstyles[tree_iter][1]
         
         return ret
-        
-        
-        
-        
+
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
+

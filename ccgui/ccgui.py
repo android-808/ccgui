@@ -303,12 +303,17 @@ class Assistant(Gtk.Assistant):
             
                 
 def main():
+    print("INIT")
     print("CCGUI Dev Version:" +  ccgui.common.get_version())
     win = Assistant()
+    print("Assistant created")
     win.show()
+    print("About to enter main()")
     Gtk.main()
 
 # Main
 if __name__ == "__main__":
     main()
-    
+
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
+

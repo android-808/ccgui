@@ -108,4 +108,7 @@ Basically just sets the title and page type automatically.
 """
 class OptionsPage(Page):
     def __init__(self, assistant):
-        Page.__init__(self, assistant=assistant, label="Options", pagetype=Gtk.AssistantPageType.CONTENT) 
+        Page.__init__(self, assistant=assistant, label="Options", pagetype=Gtk.AssistantPageType.CONTENT)
+
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
+

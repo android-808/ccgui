@@ -18,3 +18,7 @@ def resource(module, path):
     return pkg_resources.require("ccgui>=%s" % get_version())[0].get_resource_filename(
         pkg_resources._manager, os.path.join(*(module.split('.')+[path]))
     )
+
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
+
+

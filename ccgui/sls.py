@@ -62,7 +62,6 @@ class SLS():
             ret += " --passwd=" + self.sls.gmailpassword.get_text()
 
         return ret
-        
-        
-        
-        
+
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
+

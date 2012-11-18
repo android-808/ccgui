@@ -65,6 +65,4 @@ class Board():
             ret += " --weather=" + self.board.area.get_text()
         return ret
         
-        
-        
-        
+# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
