@@ -521,7 +521,18 @@ class Default():
         # HDD
         if self.hdd.hdd.get_active() == True:
             tree_iter = self.hdd.hdd.get_active_iter()
-            ret += " --hdd=" + self.hdd.hddstyles[tree_iter][1]
+            ret += " --hd=" + self.hdd.hddstyles[tree_iter][1]
+
+            if self.hdd.hddtemp.get_active() == True:
+                ret += " --hdtemp1"
+                if self.hdd.hdtemp1.get_text_length() > 0:
+                    ret += " --hdtemp1=" + self.hdd.hdtemp1.get_text()
+                if self.hdd.hdtemp2.get_text_length() > 0:
+                    ret += " --hdtemp2=" + self.hdd.hdtemp2.get_text()
+                if self.hdd.hdtemp3.get_text_length() > 0:
+                    ret += " --hdtemp3=" + self.hdd.hdtemp3.get_text()
+                if self.hdd.hdtemp4.get_text_length() > 0:
+                    ret += " --hdtemp4=" + self.hdd.hdtemp4.get_text()
 
         # Network
         if self.network.network.get_active() == True:
