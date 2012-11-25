@@ -120,6 +120,17 @@ class DesktopPage(OptionsPage):
         self.icon.set_sensitive(False)
         ccgui.ui.add_row(self, l, self.icon)
 
+        ccgui.ui.add_divider(self)
+        ccgui.ui.add_section_title(self, "Updates")
+        l = ccgui.ui.add_label(self, "Displays the total number of updates available to be installed.")
+        ccgui.ui.add_wide_control(self,l)   
+        
+        l = ccgui.ui.add_label(self, "<b>Note:</b> only currently only supports apt-get based systems (Debian/Ubuntu).")
+        ccgui.ui.add_wide_control(self,l)  
+
+        self.updates = ccgui.ui.add_check_button(self, "Show number of available updates.")
+        ccgui.ui.add_wide_control(self,self.updates) 
+
     def on_logo_toggled(self, button):
         self.icon.set_sensitive(button.get_active())
 
@@ -472,6 +483,9 @@ class Default():
         if self.desktop.replacelogo.get_active() != 0:
             tree_iter = self.desktop.icon.get_active_iter()
             ret += self.desktop.icons[tree_iter][1]
+
+        if self.desktop.updates.get_active() == True:
+            ret += " --updates"
         
         # Date/Time
         if self.datetime.nodata.get_active() == True:
