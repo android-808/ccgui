@@ -278,6 +278,7 @@ class HDDPage(OptionsPage):
                                       hexpand=True)
         self.hdd.set_model(self.hddstyles)
         self.hdd.set_active(0)
+        self.hdd.connect("changed", self.on_hdd_changed)
         ccgui.ui.add_row(self, l, self.hdd)
 
         ccgui.ui.add_divider(self)
@@ -287,6 +288,7 @@ class HDDPage(OptionsPage):
 
         self.hddtemp = ccgui.ui.add_check_button(self, "Enable HDD temperature monitoring.")
         self.hddtemp.connect("toggled", self.on_hddtemp_toggled)
+        self.hddtemp.set_sensitive(False)
         ccgui.ui.add_wide_control(self,self.hddtemp)
 
         l = ccgui.ui.add_label(self, "HDD Temperature 1:")
@@ -303,8 +305,23 @@ class HDDPage(OptionsPage):
         ccgui.ui.add_row(self, l, self.hdtemp3)
         l = ccgui.ui.add_label(self, "HDD Temperature 4:")
         self.hdtemp4 = ccgui.ui.add_entry(self)
-        self.hdtemp2.set_sensitive(False)
+        self.hdtemp4.set_sensitive(False)
         ccgui.ui.add_row(self, l, self.hdtemp4)
+
+    def on_hdd_changed(self, button):
+        if self.hdd.get_active() != 0:
+            self.hddtemp.set_sensitive(True)
+            state = self.hddtemp.get_active()
+            self.hdtemp1.set_sensitive(state)
+            self.hdtemp2.set_sensitive(state)
+            self.hdtemp3.set_sensitive(state)
+            self.hdtemp4.set_sensitive(state)
+        else:
+            self.hddtemp.set_sensitive(False)
+            self.hdtemp1.set_sensitive(False)
+            self.hdtemp2.set_sensitive(False)
+            self.hdtemp3.set_sensitive(False)
+            self.hdtemp4.set_sensitive(False)
 
     def on_hddtemp_toggled(self, button):
         state = button.get_active()
@@ -399,11 +416,19 @@ class WeatherPage(OptionsPage):
                                       hexpand=True)
         self.weather.set_model(self.weatherprovider)
         self.weather.set_active(0)
+        self.weather.connect("changed", self.on_weather_changed)
         ccgui.ui.add_row(self, l, self.weather)
         
         l = ccgui.ui.add_label(self, "Area code:")
         self.area = ccgui.ui.add_entry(self)
-        ccgui.ui.add_row(self, l, self.area)   
+        self.area.set_sensitive(False)
+        ccgui.ui.add_row(self, l, self.area)
+
+    def on_weather_changed(self, button):
+        if self.weather.get_active() != 0:
+            self.area.set_sensitive(True)
+        else:
+            self.area.set_sensitive(False)
 
 class Default():
     def __init__(self, assistant):
